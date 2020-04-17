@@ -1,6 +1,8 @@
-(ns investment-calculator.core)
+(ns investment-calculator.core
+      (:require [clojure.data.json :as json]))
 
-(defn foo
-      "I don't do a whole lot."
-      [x]
-      (println x "Hello, World!"))
+(defn json-to-clojure-data-converter [json-reader filename]
+      (json/read-str (json-reader filename) :key-fn keyword))
+
+(defn -main [& args]
+      (println (json-to-clojure-data-converter slurp "config.json")))

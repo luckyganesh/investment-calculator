@@ -10,4 +10,5 @@
          :aliases {"rebl" ["run" "-m" "rebel-readline.main"]}}
   :aliases {"kaocha" ["run" "-m" "kaocha.runner"]
             "rebl" ["run" "-m" "rebel-readline.runner"]}
-  :repl-options {:init-ns investment-calculator.core})
+  :repl-options {:init-ns investment-calculator.core}
+  :main investment-calculator.core)
