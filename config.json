@@ -1,5 +1,5 @@
 {
-  "fund": "absl-liquid-fund",
+  "fund": "absl_liquid_fund",
   "amount": 10000,
   "initial-amount": 0
 }
