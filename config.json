@@ -1,5 +1,8 @@
 {
-  "fund": "absl_liquid_fund",
+  "fund": "hdfc_index_fund_nifty",
+  "type": "SMA",
   "amount": 10000,
+  "sma": 200,
+  "alternative-fund": "absl_liquid_fund",
   "initial-amount": 0
 }
