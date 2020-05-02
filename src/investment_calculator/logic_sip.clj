@@ -59,12 +59,18 @@
                         (+ (* (:nav current-record) (:new-units current-record))
                            (:actual-worth previous-record))))
 
-(defn make-sip []
-  (let [config (json-to-clojure-data-converter "config.json")
-        records (read-and-stabilize-data config)
+(defn sip-filter [record]
+  (not (= 0 (:new-units record))))
+
+(defn str-record [{nav :nav nu :new-units tu :total-units tw :total-worth aw :actual-worth}]
+  (clojure.string/join "," [nav nu tu aw tw]))
+
+(def headers ["nav" "new-units" "total-units" "actual-worth" "total-worth"])
+
+(defn make-sip [config]
+  (let [records (read-and-stabilize-data config)
         new-units (add-new-units (:initial-amount config) (:amount config) records)
-        sip-records (filter #(not= 0 (:new-units %)) new-units)
-        total-units (rest (reductions add-total-units {:total-units 0} sip-records))
+        total-units (rest (reductions add-total-units {:total-units 0} new-units))
         total-worth (map add-total-worth total-units)
         actual-worth (rest (reductions add-actual-worth {:actual-worth 0} total-worth))]
-    (count (map println actual-worth))))
+    actual-worth))

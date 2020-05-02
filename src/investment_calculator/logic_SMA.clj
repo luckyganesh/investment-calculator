@@ -62,11 +62,19 @@
 (defn add-total-worth [record]
   (assoc record :total-worth (+ (* (:nav record) (:tu record)) (* (:s-nav record) (:tau record)))))
 
+(defn sma-filter [record]
+  (not (== 0 (:nu record) (:nau record))))
+
+(defn str-record [{nav :nav s-nav :s-nav nu :nu tu :tu nau :nau tau :tau total-worth :total-worth actual-worth :actual-worth sma :sma}]
+  (string/join "," [nav s-nav sma nu tu nau tau actual-worth total-worth]))
+
+(def headers ["nav" "liquid-nav" "sma" "new-units" "total-units" "liquid-new-units" "liquid-total-units" "actual-worth" "total-worth"])
+
 (defn make-SMA [config]
   (let [fund-records (read-parse-fund (:fund config))
         alternative-fund-records (read-parse-fund (:alternative-fund config))
         merged-funds (map merge-navs fund-records alternative-fund-records)
         added-smas (add-smas (:sma config) merged-funds)
-        new-units (rest (reductions (partial add-new-units (:amount config)) {:tu 0, :tau 0 :actual-worth 0} added-smas))
+        new-units (rest (reductions (partial add-new-units (:amount config)) {:tu (/ (:initial-amount config) (:nav (first added-smas))) :tau 0 :actual-worth (:initial-amount config)} added-smas))
         total-worth (map add-total-worth new-units)]
-    (count (map println total-worth))))
+    total-worth))
